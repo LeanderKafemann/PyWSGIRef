@@ -13,4 +13,12 @@ class InvalidFiletypeError(Exception):
     """
     def __init__(self, message="Invalid file type. Only .pyhtml files are allowed."):
         self.message = message
-        super().__init__(self.message))
+        super().__init__(self.message)
+
+class InvalidCallableError(Exception):
+    """
+    Raised when a callable is expected but not provided.
+    """
+    def __init__(self, message="Expected a callable object."):
+        self.message = message
+        super().__init__(self.message)
