@@ -1,3 +1,4 @@
 .vs/*
-.old/*
-.dist/*
+old/*
+dist/*
+src/PyWSGIRef.egg-info/*
