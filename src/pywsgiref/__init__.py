@@ -13,7 +13,7 @@ def about():
     """
     Returns information about your release and other projects by LK
     """
-    return {"Version":(1, 0, 0), "Author":"Leander Kafemann", "date":"07.06.2025",\
+    return {"Version":(1, 0, 1), "Author":"Leander Kafemann", "date":"07.06.2025",\
             "recommend":("Büro by LK",  "pyimager by LK", "naturalsize by LK"), "feedbackTo": "leander@kafemann.berlin"}
 
 SCHABLONEN = {}
@@ -47,7 +47,7 @@ def addSchablone(name: str, content: str):
     Adds a template to the SCHABLONEN dictionary.
     """
     global SCHABLONEN
-    SCHABLONEN += {name: PyHTML(content)}
+    SCHABLONEN[name] =  PyHTML(content)
 
 def makeApplicationObject(contentGeneratingFunction: Callable) -> Callable:
     """
