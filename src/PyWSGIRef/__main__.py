@@ -44,10 +44,12 @@ def main():
 
     # set up server
     server = setUpServer(application)
-    server.serve_forever()
 
     # Note: This code is intended to be run as a script, not as a module.
     print("Successfully started WSGI server on port 8000.")
+
+    # start serving
+    server.serve_forever()
 
 if __name__ == "__main__":
     main()

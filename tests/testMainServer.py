@@ -1,0 +1,3 @@
+from PyWSGIRef import *
+
+main()

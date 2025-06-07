@@ -8,13 +8,14 @@ from wsgiref.simple_server import make_server, WSGIServer
 from .exceptions import *
 from .pyhtml import PyHTML
 from .defaults import *
+from .__main__ import main
 
 def about():
     """
     Returns information about your release and other projects by LK
     """
-    return {"Version":(1, 0, 1), "Author":"Leander Kafemann", "date":"07.06.2025",\
-            "recommend":("Büro by LK",  "pyimager by LK", "naturalsize by LK"), "feedbackTo": "leander@kafemann.berlin"}
+    return {"Version":(1, 0, 2), "Author":"Leander Kafemann", "date":"07.06.2025",\
+            "recommend":("Büro by LK",  "pyimager by LK"), "feedbackTo": "leander@kafemann.berlin"}
 
 SCHABLONEN = {}
 finished = False
