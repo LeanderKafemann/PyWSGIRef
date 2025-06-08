@@ -22,3 +22,11 @@ class InvalidCallableError(Exception):
     def __init__(self, message="Expected a callable object."):
         self.message = message
         super().__init__(self.message)
+
+class AdvancedHeadersWithoutAdvancedModeError(Exception):
+    """
+    Raised when advanced headers are set without advanced mode being enabled.
+    """
+    def __init__(self, message="Advanced headers cannot be set without enabling advanced mode."):
+        self.message = message
+        super().__init__(self.message)

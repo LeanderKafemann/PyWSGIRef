@@ -43,6 +43,29 @@ server.serve_forever()
 The <code>makeWSGIApp</code> function requires a callable that takes a single argument (the path) and returns a string response.<br/>
 The <code>makeWSGIServer</code> function creates a WSGI server that listens on the specified port (default is 8000)<br/>
 and calls the application object with the environ.<br/>
+You may also specify advanced options in <code>makeWSGIApp</code>:<br/>
+- you can set the <code>advanced</code> parameter to <code>True</code>, so that your application method also gets an FieldStorage type object<br/>
+- you can set the <code>setAdvancedHeaders</code> parameter to <code>True</code>, so that the application method is also able to set status codes and types in the response headers,<br/>
+  which is only possible if the <code>advanced</code> parameter is set to <code>True</code><br/>
+Example:
+```python
+from PyWSGIRef import *
+
+# Create a WSGI application object with advanced options
+def advanced_app(path: str, form: FieldStorage) -> str, str, str:
+	# You can access form data here
+	name = str(form.getvalue('name'))
+	
+	if path == "/hello":
+		return f"Hello, {name}, you visited {path}!", "text/html", "200 OK"
+	else:
+		return "Page not found", "text/html", "404 Not Found"
+application = makeWSGIApp(advanced_app, advanced=True, setAdvancedHeaders=True)
+
+# Create a WSGI server
+server = makeWSGIServer(application, port=8000)
+server.serve_forever()
+```
 You can also use your own application object instead of the one created by <code>makeWSGIApp</code>.
 ### Loading PyHTML
 PyWSGIRef also provides a simple way to load PyHTML files:
@@ -86,7 +109,7 @@ addSchablone("error", ERROR)
 ### __main__ script
 You may produce a simple WSGI server by using either:<br/>
 ```python
-from PyWSGIRef import *
+from PyWSGIRef import main
 
 main()
 ```
@@ -94,9 +117,13 @@ or (from a commandline)
 ```bash
 py -m PyWSGIRef
 ```
+### Decoding PyHTML
+coming soon...
 ### Others
 Use the following to get information about your release and the author of the module:
 ```python
-pycols.about()
+from PyWSGIRef import about
+
+about()
 ```
 ### More coming soon
