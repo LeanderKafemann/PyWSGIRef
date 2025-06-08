@@ -118,7 +118,23 @@ or (from a commandline)
 py -m PyWSGIRef
 ```
 ### Decoding PyHTML
-coming soon...
+(more coming soon...)<br/>
+PyWSGIRef provides a simple way to shorten a common HTML beginning phrase in PyHTML:
+```python
+from PyWSGIRef import PyHTML
+
+# Shorten HTML beginning phrase
+pyhtml_ = """<{{evalPyHTML}}>
+		<title>My Page</title>
+	</head>
+	<body>
+		<h1>Hello, World!</h1>
+	</body>
+</html>"""
+pyhtml = PyHTML(pyhtml_)
+html = pyhtml.decoded()
+```
+, which is actually automatically done by PyWSGIRef.
 ### Others
 Use the following to get information about your release and the author of the module:
 ```python
