@@ -1,0 +1,22 @@
+[project]
+name = "PyWSGIRef"
+version = "1.1.0"
+authors = [
+  {name="Leander Kafemann", email="leander@kafemann.berlin" },
+]
+description = "easy server-setup"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests",
+    "typing",
+    "legacy-cgi",
+]
+
+[project.urls]
+Homepage = "https://github.com/LeanderKafemann/PyWSGIRef"

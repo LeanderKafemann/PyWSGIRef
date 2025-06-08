@@ -2,4 +2,3 @@
 old/*
 dist/*
 src/PyWSGIRef.egg-info/*
-pyproject.toml
