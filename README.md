@@ -34,10 +34,10 @@ from PyWSGIRef import *
 # Create a WSGI application object
 def simple_app(path: str) -> str:
 	return f"Hello, you visited {path}!"
-application = makeWSGIApp(simple_app)
+application = makeApplicationObject(simple_app)
 
 # Create a WSGI server
-server = makeWSGIServer(application, port=8000)
+server = setUpServer(application, port=8000)
 server.serve_forever()
 ```
 The <code>makeWSGIApp</code> function requires a callable that takes a single argument (the path) and returns a string response.<br/>
@@ -60,10 +60,10 @@ def advanced_app(path: str, form: FieldStorage) -> str, str, str:
 		return f"Hello, {name}, you visited {path}!", "text/html", "200 OK"
 	else:
 		return "Page not found", "text/html", "404 Not Found"
-application = makeWSGIApp(advanced_app, advanced=True, setAdvancedHeaders=True)
+application = makeApplicationObject(advanced_app, advanced=True, setAdvancedHeaders=True)
 
 # Create a WSGI server
-server = makeWSGIServer(application, port=8000)
+server = setUpServer(application, port=8000)
 server.serve_forever()
 ```
 You can also use your own application object instead of the one created by <code>makeWSGIApp</code>.
