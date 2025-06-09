@@ -134,7 +134,9 @@ pyhtml_ = """<{{evalPyHTML}}>
 pyhtml = PyHTML(pyhtml_)
 html = pyhtml.decoded()
 ```
-, which is actually automatically done by PyWSGIRef.
+, which is actually automatically done by PyWSGIRef.<br/>
+The <code><{{evalPyHTML}}></code> phrase at the beginning of the document includes a Doctype announcement,<br/>
+a html and head block and some common meta phrases as utf-8 encoding or device-width scaling.
 ### Others
 Use the following to get information about your release and the author of the module:
 ```python
