@@ -16,6 +16,7 @@ dependencies = [
     "requests",
     "typing",
     "legacy-cgi",
+    "naturalsize",
 ]
 
 [project.urls]

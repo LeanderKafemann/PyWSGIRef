@@ -30,3 +30,11 @@ class AdvancedHeadersWithoutAdvancedModeError(Exception):
     def __init__(self, message="Advanced headers cannot be set without enabling advanced mode."):
         self.message = message
         super().__init__(self.message)
+
+class InvalidIncludePhraseFiletypeError(InvalidFiletypeError):
+    """
+    Raised when an invalid file type is encountered in the include phrase of a PyHTML file.
+    """
+    def __init__(self, message="Invalid file type in include phrase. Only .css, .js, and .json files are allowed."):
+        self.message = message
+        super().__init__(self.message)
