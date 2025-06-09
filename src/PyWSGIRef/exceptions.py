@@ -38,3 +38,11 @@ class InvalidIncludePhraseFiletypeError(InvalidFiletypeError):
     def __init__(self, message="Invalid file type in include phrase. Only .css, .js, and .json files are allowed."):
         self.message = message
         super().__init__(self.message)
+
+class StaticResourceUsageOutsideHeadError(Exception):
+    """
+    Raised when a static resource is tried to include outside the head term of a PyHTML file.
+    """
+    def __init__(self, message="Static resource usage out of <head> term detected."):
+        self.message = message
+        super().__init__(self.message)

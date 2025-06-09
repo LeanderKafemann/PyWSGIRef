@@ -2,7 +2,7 @@ from naturalsize import replStr, replStrPassage
 
 from .defaults import HELLO_WORLD as DEFAULT
 from .commons import *
-from .exceptions import InvalidIncludePhraseFiletypeError
+from .exceptions import InvalidIncludePhraseFiletypeError, StaticResourceUsageOutsideHeadError
 
 class PyHTML:
     def __init__(self, html: str = DEFAULT):
@@ -25,6 +25,8 @@ class PyHTML:
         idx = self.html.find("<{{evalPyHTML-include: ")
         if idx != -1:
             idxEnd = self.html.find(" :include-}}>", idx)
+            if idxEnd > self.html.find("</head>"):
+                raise StaticResourceUsageOutsideHeadError()
             setIn = ""
             for i in self.html[idx:idxEnd+12].split(":")[1].strip().split(","):
                 if i.endswith(".css"):
@@ -36,6 +38,11 @@ class PyHTML:
                 else:
                     raise InvalidIncludePhraseFiletypeError()
             self.html = replStrPassage(idx, idxEnd+12, self.html, setIn)
+
+        # PyWSGIRef's styling
+        idx = self.html.find("<{{evalPyHTML-modernStyling: true}}>")
+        if idx != -1:
+            self.html = replStrPassage(idx, idx+35, self.html, MODERN_STYLING)
 
     def decoded(self) -> str:
         """
