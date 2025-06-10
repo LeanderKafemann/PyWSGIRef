@@ -144,4 +144,13 @@ from PyWSGIRef import about
 
 about()
 ```
+### Curious?
+Join the <b>BETA</b> group to get new features even earlier!<br/>
+Note that BETA features may not be tested when using them.
+```python
+from PyWSGIRef import BETA
+
+#enable beta mode
+BETA.enable()
+```
 ### More coming soon

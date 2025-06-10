@@ -22,7 +22,7 @@ class PyHTML:
         if self.html.endswith("<{{evalPyHTML}}>"):
             self.html = self.html[:-16] + END_REPLACE
         
-        if BETA:
+        if BETA.value():
             # static ressources
             idx = self.html.find("<{{evalPyHTML-include: ")
             if idx != -1:
