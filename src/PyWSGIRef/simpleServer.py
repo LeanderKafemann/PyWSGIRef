@@ -21,6 +21,9 @@ def main():
                 content = SCHABLONEN["main"].decoded().format(about()["Version"])
             case "/hello":
                 content = HELLO_WORLD
+            case "/shutdown":
+                content = SHUTDOWN_HTML
+                server.shutdown()
             case _:
                 content = ERROR
         return content
