@@ -35,6 +35,8 @@ SHUTDOWN_HTML = """<!DOCTYPE html>
         <title>Server Shutdown</title>
     <body>
         <h1>Server Shutdown</h1>
-        <p>Der Server wird jetzt heruntergefahren.</p>
+        <p>
+            Der Server wird jetzt heruntergefahren.
+        </p>
     </body>
 </html>"""
