@@ -1,0 +1,10 @@
+<{{evalPyHTML}}><title>Hello World</title>
+		<{{evalPyHTML-include: https://buero-os-toolkit-development.github.io/BueroWebKit/styling/style.css :include-}}>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>
+		    This is a test whether the stylesheet will be included...
+		</p>
+	</body>
+</html>

@@ -4,6 +4,7 @@ from PyWSGIRef import *
 BETA.enable()
 
 addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
+#addSchablone("includeStyleTest", loadFromFile("./includeStyleTest.pyhtml"))
 
 def contentGeneratingFunction(path: str) -> str:
     """
@@ -14,6 +15,8 @@ def contentGeneratingFunction(path: str) -> str:
             return MAIN_HTML.format(about()["Version"])
         case "/hello":
             return SCHABLONEN["helloWorld"].decoded()
+        case "/includeStyleTest":
+            return SCHABLONEN["includeStyleTest"].decoded()
         case _:
             return "404 Not Found"
 
