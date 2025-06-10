@@ -153,4 +153,9 @@ from PyWSGIRef import BETA
 #enable beta mode
 BETA.enable()
 ```
+Currently to be tested are:<br/>
+- PyHTML include static resource blocks<br/>
+- PyHTML include default modern styling block<br/><br/>
+
+Thanks a lot for helping improving PyWSGIRef!
 ### More coming soon

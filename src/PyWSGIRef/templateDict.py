@@ -1,5 +1,6 @@
 from .exceptions import ServerAlreadyGeneratedError
 from .pyhtml import PyHTML
+from .finished import OneWayBoolean
 
 class TemplateDict:
 	def __init__(self):
@@ -32,20 +33,3 @@ class TemplateDict:
 
 	def items(self) -> list:
 		return list(self.dictionary.items())
-
-class OneWayBoolean:
-	def __init__(self):
-		self._value = False
-
-	@property
-	def value(self) -> bool:
-		return self._value
-
-	def set_true(self):
-		"""
-		Setzt den Wert auf True, wenn er False ist.
-		"""
-		if not self._value:
-			self._value = True
-		else:
-			raise ValueError("Value is already True, cannot set again.")

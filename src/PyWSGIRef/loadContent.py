@@ -4,7 +4,7 @@ Content loading helper.
 import requests
 
 from .exceptions import *
-from PyWSGIRef import finished
+from .finished import finished
 
 def loadFromWeb(url: str, data: dict = {}) -> str:
     """

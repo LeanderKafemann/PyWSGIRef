@@ -2,6 +2,8 @@
 BETA mode...
 """
 
+from .exceptions import BetaAlreadyEnabledError
+
 class beta:
     """
     BETA mode for PyWSGIRef.
@@ -18,7 +20,7 @@ class beta:
         Enables BETA mode.
         """
         if self._beta:
-            raise ValueError("BETA mode is already enabled.")
+            raise BetaAlreadyEnabledError()
         self._beta = True
 
 BETA = beta()

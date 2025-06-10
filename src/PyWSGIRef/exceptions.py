@@ -46,3 +46,19 @@ class StaticResourceUsageOutsideHeadError(Exception):
     def __init__(self, message="Static resource usage out of <head> term detected."):
         self.message = message
         super().__init__(self.message)
+
+class BooleanAlreadyTrueError(Exception):
+    """
+    Raised when trying to set a boolean that is already True.
+    """
+    def __init__(self, message="Boolean value is already True."):
+        self.message = message
+        super().__init__(self.message)#
+
+class BetaAlreadyEnabledError(BooleanAlreadyTrueError):
+    """
+    Raised when trying to enable beta mode that is already enabled.
+    """
+    def __init__(self, message="Beta mode is already enabled."):
+        self.message = message
+        super().__init__(self.message)

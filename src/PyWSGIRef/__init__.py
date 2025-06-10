@@ -11,16 +11,16 @@ from .defaults import *
 from .templateDict import TemplateDict, OneWayBoolean
 from .beta import BETA
 from .loadContent import *
+from .finished import finished
 
 def about():
     """
-    Returns information about your release and other projects by LK
+    Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version":(1, 1, 4), "Author":"Leander Kafemann", "date":"10.06.2025",\
+    return {"Version":(1, 1, 5), "Author":"Leander Kafemann", "date":"10.06.2025",\
             "recommend":("Büro by LK",  "pyimager by LK"), "feedbackTo": "leander@kafemann.berlin"}
 
 SCHABLONEN = TemplateDict()
-finished = OneWayBoolean()
 
 def addSchablone(name: str, content: str):
     """
