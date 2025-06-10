@@ -1,4 +1,4 @@
-from naturalsize import replStr, replStrPassage
+from naturalsize import replStrPassage
 
 from .defaults import HELLO_WORLD as DEFAULT
 from .commons import *
@@ -8,6 +8,7 @@ from .beta import BETA
 class PyHTML:
     def __init__(self, html: str = DEFAULT):
         self.html = html
+
     def decode(self):
         """
         Decodes the HTML content.
@@ -22,7 +23,7 @@ class PyHTML:
         if self.html.endswith("<{{evalPyHTML}}>"):
             self.html = self.html[:-16] + END_REPLACE
         
-        if BETA.value():
+        if BETA.value:
             # static ressources
             idx = self.html.find("<{{evalPyHTML-include: ")
             if idx != -1:
@@ -44,6 +45,8 @@ class PyHTML:
             # PyWSGIRef's styling
             idx = self.html.find("<{{evalPyHTML-modernStyling: true}}>")
             if idx != -1:
+                if idx > self.html.find("</head>"):
+                    raise StaticResourceUsageOutsideHeadError()
                 self.html = replStrPassage(idx, idx+35, self.html, MODERN_STYLING)
 
     def decoded(self) -> str:

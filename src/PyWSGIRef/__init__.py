@@ -2,7 +2,6 @@
 PYWSGIREF
 """
 from typing import Callable
-import requests
 from wsgiref.simple_server import make_server, WSGIServer
 from cgi import FieldStorage
 
@@ -11,39 +10,17 @@ from .pyhtml import PyHTML
 from .defaults import *
 from .templateDict import TemplateDict, OneWayBoolean
 from .beta import BETA
+from .loadContent import *
 
 def about():
     """
     Returns information about your release and other projects by LK
     """
-    return {"Version":(1, 1, 3), "Author":"Leander Kafemann", "date":"10.06.2025",\
+    return {"Version":(1, 1, 4), "Author":"Leander Kafemann", "date":"10.06.2025",\
             "recommend":("Büro by LK",  "pyimager by LK"), "feedbackTo": "leander@kafemann.berlin"}
 
 SCHABLONEN = TemplateDict()
 finished = OneWayBoolean()
-
-def loadFromWeb(url: str, data: dict = {}) -> str:
-    """
-    Loads content from the given URL with the given data.
-    """
-    if finished.value:
-        raise ServerAlreadyGeneratedError()
-    if not url.endswith(".pyhtml"):
-        raise InvalidFiletypeError()
-    rq = requests.post(url, data).content
-    return rq.decode()
-
-def loadFromFile(filename: str) -> str:
-    """
-    Loads a file from the given filename.
-    """
-    if finished.value:
-        raise ServerAlreadyGeneratedError()
-    if not filename.endswith(".pyhtml"):
-        raise InvalidFiletypeError()
-    with open(filename, "r", encoding="utf-8") as f:
-        content = f.read()
-    return content
 
 def addSchablone(name: str, content: str):
     """
@@ -94,36 +71,3 @@ def setUpServer(application: Callable, port: int = 8000) -> WSGIServer:
     finished.set_true()
     server = make_server('', 8000, application)
     return server
-
-def main():
-    """
-    Main function to set up and run the PyWSGIRef server.
-    """
-    # add Schablone 'Hallo Welt' as main
-    addSchablone("main", MAIN_HTML)
-
-    # set up application object
-    def contentGenerator(path: str) -> str:
-        """
-        Serves as the main WSGI application.
-        """
-        match path:
-            case "/":
-                content = SCHABLONEN["main"].decoded().format(about()["Version"])
-            case "/hello":
-                content = HELLO_WORLD
-            case _:
-                content = ERROR
-        return content
-
-    # make the application object
-    application = makeApplicationObject(contentGenerator)
-
-    # set up server
-    server = setUpServer(application)
-
-    # Note: This code is intended to be run as a script, not as a module.
-    print("Successfully started WSGI server on port 8000.")
-
-    # start serving
-    server.serve_forever()

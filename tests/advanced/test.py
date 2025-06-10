@@ -1,7 +1,7 @@
 from PyWSGIRef import *
 
 # enable beta mode
-BETA = True
+BETA.enable()
 
 addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
 
