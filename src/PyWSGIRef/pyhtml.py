@@ -22,6 +22,13 @@ class PyHTML:
         # common html ending phrase
         if self.html.endswith("<{{evalPyHTML}}>"):
             self.html = self.html[:-16] + END_REPLACE
+
+        # PyWSGIRef's styling
+        idx = self.html.find("<{{evalPyHTML-modernStyling: true}}>")
+        if idx != -1:
+            if idx > self.html.find("</head>"):
+                raise StaticResourceUsageOutsideHeadError()
+            self.html = replStrPassage(idx, idx+35, self.html, MODERN_STYLING)
         
         if BETA.value:
             # static ressources
@@ -31,7 +38,7 @@ class PyHTML:
                 if idxEnd > self.html.find("</head>"):
                     raise StaticResourceUsageOutsideHeadError()
                 setIn = ""
-                for i in self.html[idx:idxEnd+12].split(":")[1].strip().split(","):
+                for i in self.html[idx:idxEnd].split(":")[1].strip().split(","):
                     if i.endswith(".css"):
                         setIn += "\t\t<link rel='stylesheet' href='{}'/>\n".format(i)
                     elif i.endswith(".js"):
@@ -41,13 +48,6 @@ class PyHTML:
                     else:
                         raise InvalidIncludePhraseFiletypeError()
                 self.html = replStrPassage(idx, idxEnd+12, self.html, setIn)
-
-            # PyWSGIRef's styling
-            idx = self.html.find("<{{evalPyHTML-modernStyling: true}}>")
-            if idx != -1:
-                if idx > self.html.find("</head>"):
-                    raise StaticResourceUsageOutsideHeadError()
-                self.html = replStrPassage(idx, idx+35, self.html, MODERN_STYLING)
 
     def decoded(self) -> str:
         """

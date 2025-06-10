@@ -136,7 +136,24 @@ html = pyhtml.decoded()
 ```
 , which is actually automatically done by PyWSGIRef.<br/>
 The <code><{{evalPyHTML}}></code> phrase at the beginning of the document includes a Doctype announcement,<br/>
-a html and head block and some common meta phrases as utf-8 encoding or device-width scaling.
+a html and head block and some common meta phrases as utf-8 encoding or device-width scaling.<br/><br/>
+PyWSGIRef also provides a simple way to end PyHTML files:<br/>
+just use the <code><{{evalPyHTML}}></code> phrase at the end of the document and<br/>
+PyWSGIRef will automatically add the closing html and body tags.<br/><br/>
+You can also add PyWSGIRef's own, featured modern stylesheet using:<br/>
+<code><{{evalPyHTML-modernStyling: true}}></code> inside the head block of your PyHTML file.
+### Shutting down your server
+You can shut down your server by calling the <code>shutdown</code> method on the server object:
+```python
+from PyWSGIRef import *
+
+# ...
+# Create a WSGI server
+server = setUpServer(application, port=8000)
+
+# Shut down the server
+server.shutdown()
+```
 ### Others
 Use the following to get information about your release and the author of the module:
 ```python
@@ -154,8 +171,7 @@ from PyWSGIRef import BETA
 BETA.enable()
 ```
 Currently to be tested are:<br/>
-- PyHTML include static resource blocks<br/>
-- PyHTML include default modern styling block<br/><br/>
+- PyHTML include static resource blocks<br/><br/>
 
 Thanks a lot for helping improving PyWSGIRef!
 ### More coming soon
