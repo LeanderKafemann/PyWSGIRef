@@ -1,5 +1,8 @@
 from PyWSGIRef import *
 
+# enable beta mode
+BETA = True
+
 addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
 
 def contentGeneratingFunction(path: str) -> str:
