@@ -8,7 +8,7 @@ from cgi import FieldStorage
 from .exceptions import *
 from .pyhtml import PyHTML
 from .defaults import *
-from .templateDict import TemplateDict, OneWayBoolean
+from .templateDict import TemplateDict
 from .beta import BETA
 from .loadContent import *
 from .finished import finished
@@ -17,7 +17,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version":(1, 1, 5), "Author":"Leander Kafemann", "date":"10.06.2025",\
+    return {"Version":(1, 1, 6), "Author":"Leander Kafemann", "date":"12.06.2025",\
             "recommend":("Büro by LK",  "pyimager by LK"), "feedbackTo": "leander@kafemann.berlin"}
 
 SCHABLONEN = TemplateDict()

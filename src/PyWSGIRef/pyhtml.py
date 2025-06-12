@@ -1,53 +1,94 @@
+import re
 from naturalsize import replStrPassage
 
 from .defaults import HELLO_WORLD as DEFAULT
 from .commons import *
 from .exceptions import InvalidIncludePhraseFiletypeError, StaticResourceUsageOutsideHeadError
 from .beta import BETA
+from .patterns import *
 
 class PyHTML:
     def __init__(self, html: str = DEFAULT):
         self.html = html
 
+    def _replace_eval_phrase(self):
+        """
+        Scans the HTML for the evalPyHTML phrase and replaces it with the appropriate start and end phrases.
+        """
+        if self.html.startswith(EVAL_PYHTML):
+            self.html = START_REPLACE + self.html[len(EVAL_PYHTML):]
+        if self.html.endswith(EVAL_PYHTML):
+            self.html = self.html[:-len(EVAL_PYHTML)] + END_REPLACE
+
+    def _replace_modern_styling(self):
+        """
+        Scans the HTML for the modern styling phrase and replaces it with the appropriate CSS.
+        """
+        idx = self.html.find(MODERN_STYLING_PHRASE)
+        if idx != -1:
+            head_idx = self.html.find("</head>")
+            if idx > head_idx:
+                raise StaticResourceUsageOutsideHeadError()
+            self.html = replStrPassage(idx, idx+len(MODERN_STYLING_PHRASE), self.html, MODERN_STYLING)
+
+    def _replace_includes(self):
+        """
+        Scans the HTML for include phrases and replaces them with the appropriate resources.
+        """
+        for match in re.finditer(INCLUDE_PATTERN, self.html):
+            idx, idxEnd = match.span()
+            head_idx = self.html.find("</head>")
+            if idx > head_idx:
+                raise StaticResourceUsageOutsideHeadError()
+            resources = match.group(1).split(",")
+            setIn = ""
+            for i in resources:
+                i = i.strip()
+                if i.endswith(".css"):
+                    setIn += f"\t\t<link rel='stylesheet' href='{i}'/>\n"
+                elif i.endswith(".js"):
+                    setIn += f"\t\t<script src='{i}'></script>\n"
+                elif i.endswith(".json"):
+                    setIn += f"\t\t<link rel='manifest' href='{i}'/>\n"
+                elif i.endswith("favicon.ico"):
+                    setIn += f"\t\t<link rel='icon' href='{i}'/>\n"
+                else:
+                    raise InvalidIncludePhraseFiletypeError()
+            self.html = self.html[:idx] + setIn + self.html[idxEnd:]
+
+    def _replace_script_blocks(self):
+        """
+        Sucht nach evalPyHTML-script Phrasen und ersetzt sie durch <script>-Blöcke.
+        Nur im BETA-Modus aktiv.
+        """
+        for match in re.finditer(SCRIPT_PATTERN, self.html, re.DOTALL):
+            idx, idxEnd = match.span()
+            script_content = match.group(1).strip()
+            replacement = f"<script>{script_content}</script>"
+            self.html = self.html[:idx] + replacement + self.html[idxEnd:]
+
+    def _replace_style_blocks(self):
+        """
+        Sucht nach evalPyHTML-style Phrasen und ersetzt sie durch <style>-Blöcke.
+        Nur im BETA-Modus aktiv.
+        """
+        for match in re.finditer(STYLE_PATTERN, self.html, re.DOTALL):
+            idx, idxEnd = match.span()
+            style_content = match.group(1).strip()
+            replacement = f"<style>{style_content}</style>"
+            self.html = self.html[:idx] + replacement + self.html[idxEnd:]
+
     def decode(self):
         """
-        Decodes the HTML content.
+        Decodes the HTML content by replacing specific phrases and applying modern styling.
         """
         self.html = self.html.strip()
-
-        # common html beginning phrase
-        if self.html.startswith("<{{evalPyHTML}}>"):
-            self.html = START_REPLACE + self.html[16:]
-
-        # common html ending phrase
-        if self.html.endswith("<{{evalPyHTML}}>"):
-            self.html = self.html[:-16] + END_REPLACE
-
-        # PyWSGIRef's styling
-        idx = self.html.find("<{{evalPyHTML-modernStyling: true}}>")
-        if idx != -1:
-            if idx > self.html.find("</head>"):
-                raise StaticResourceUsageOutsideHeadError()
-            self.html = replStrPassage(idx, idx+35, self.html, MODERN_STYLING)
-        
+        self._replace_eval_phrase()
+        self._replace_modern_styling()
         if BETA.value:
-            # static ressources
-            idx = self.html.find("<{{evalPyHTML-include: ")
-            if idx != -1:
-                idxEnd = self.html.find(" :include-}}>", idx)
-                if idxEnd > self.html.find("</head>"):
-                    raise StaticResourceUsageOutsideHeadError()
-                setIn = ""
-                for i in self.html[idx:idxEnd].split(":")[1].strip().split(","):
-                    if i.endswith(".css"):
-                        setIn += "\t\t<link rel='stylesheet' href='{}'/>\n".format(i)
-                    elif i.endswith(".js"):
-                        setIn += "\t\t<script src='{}'></script>\n".format(i)
-                    elif i.endswith(".json"):
-                        setIn += "\t\t<link rel='manifest' href='{}'/>\n".format(i)
-                    else:
-                        raise InvalidIncludePhraseFiletypeError()
-                self.html = replStrPassage(idx, idxEnd+12, self.html, setIn)
+            self._replace_includes()
+            self._replace_script_blocks()
+            self._replace_style_blocks()
 
     def decoded(self) -> str:
         """
