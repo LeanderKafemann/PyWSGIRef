@@ -58,8 +58,7 @@ class PyHTML:
 
     def _replace_script_blocks(self):
         """
-        Sucht nach evalPyHTML-script Phrasen und ersetzt sie durch <script>-Blöcke.
-        Nur im BETA-Modus aktiv.
+        Replaces script replacement phrases with JS scripts.
         """
         for match in re.finditer(SCRIPT_PATTERN, self.html, re.DOTALL):
             idx, idxEnd = match.span()
@@ -69,8 +68,7 @@ class PyHTML:
 
     def _replace_style_blocks(self):
         """
-        Sucht nach evalPyHTML-style Phrasen und ersetzt sie durch <style>-Blöcke.
-        Nur im BETA-Modus aktiv.
+        Replaces style replacement phrases with CSS styles.
         """
         for match in re.finditer(STYLE_PATTERN, self.html, re.DOTALL):
             idx, idxEnd = match.span()

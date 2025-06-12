@@ -1,0 +1,14 @@
+<{{evalPyHTML}}><title>Hello World</title>
+		<{{evalPyHTML-modernStyling: true}}>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>
+		    This is a simple HTML page generated using PyHTML.
+		</p>
+		<p>
+			The test was successful if you see a message.
+		</p>
+		<{{evalPyHTML-script: "console.log('Script included successfully!'); alert('Test123');" :script-}}>
+	</body>
+</html>
