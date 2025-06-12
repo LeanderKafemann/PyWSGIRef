@@ -9,6 +9,6 @@
 		<p>
 			The test was successful if you see a message.
 		</p>
-		<{{evalPyHTML-script: "console.log('Script included successfully!'); alert('Test123');" :script-}}>
+		<{{evalPyHTML-script: console.log('Script included successfully!'); alert('Test123'); :script-}}>
 	</body>
 </html>

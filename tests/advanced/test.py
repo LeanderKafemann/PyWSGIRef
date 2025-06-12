@@ -14,12 +14,16 @@ def contentGeneratingFunction(path: str) -> str:
     match path:
         case "/":
             return MAIN_HTML.format(about()["Version"])
+            # successfull
         case "/hello":
             return SCHABLONEN["helloWorld"].decoded()
+            # successfull
         case "/includeStyleTest":
             return SCHABLONEN["includeStyleTest"].decoded()
+            # successfull
         case "/scriptInclusionTest":
             return SCHABLONEN["scriptInclusionTest"].decoded()
+            # successfull
         case _:
             return "404 Not Found"
 

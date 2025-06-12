@@ -83,9 +83,9 @@ class PyHTML:
         self.html = self.html.strip()
         self._replace_eval_phrase()
         self._replace_modern_styling()
+        self._replace_script_blocks()
         if BETA.value:
             self._replace_includes()
-            self._replace_script_blocks()
             self._replace_style_blocks()
 
     def decoded(self) -> str:
