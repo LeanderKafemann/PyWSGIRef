@@ -143,7 +143,7 @@ PyWSGIRef will automatically add the closing html and body tags.<br/><br/>
 You can also add PyWSGIRef's own, featured modern stylesheet using:<br/>
 <code><{{evalPyHTML-modernStyling: true}}></code> inside the head block of your PyHTML file.<br/><br/>
 With the <code><{{evalPyHTML-script: alert('Hello, World!'); :script-}}></code> phrase,<br/>
-you can add a script block anywhere inside your PyHTML file.<br/>}}>
+you can add a script block anywhere inside your PyHTML file.<br/>
 ### Shutting down your server
 You can shut down your server by calling the <code>shutdown</code> method on the server object:
 ```python

@@ -17,7 +17,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 7), "Author": "Leander Kafemann", "date": "12.06.2025",\
+    return {"Version": (1, 1, 8), "Author": "Leander Kafemann", "date": "13.06.2025",\
             "recommend": ("Büro by LK",  "pyimager by LK"), "feedbackTo": "leander@kafemann.berlin"}
 
 SCHABLONEN = TemplateDict()

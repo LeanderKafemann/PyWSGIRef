@@ -1,4 +1,3 @@
 requests
-typing
 legacy-cgi
 naturalsize >= 1.0.15
