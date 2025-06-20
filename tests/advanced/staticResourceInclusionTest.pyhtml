@@ -7,7 +7,7 @@
 		    This is a simple HTML page generated using PyHTML.
 		</p>
 		<p class="green">
-			The test was successful if this text is green,<br/>
+			The test was successful if the background is blue,<br/>
 			you see a message and a favicon and you can save this as PWA.
 		</p>
 	</body>
