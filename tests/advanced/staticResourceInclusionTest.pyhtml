@@ -1,0 +1,14 @@
+<{{evalPyHTML}}><title>Hello World</title>
+		<{{evalPyHTML-include: https://leanderkafemann.github.io/PyWSGIRef-Backend/styling/modernStyle.css,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/alert.js,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/favicon.ico,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/manifest.json}}>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>
+		    This is a simple HTML page generated using PyHTML.
+		</p>
+		<p class="green">
+			The test was successful if this text is green,<br/>
+			you see a message and a favicon and you can save this as PWA.
+		</p>
+	</body>
+</html>

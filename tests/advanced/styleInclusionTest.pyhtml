@@ -1,0 +1,14 @@
+<{{evalPyHTML}}><title>Hello World</title>
+		<{{evalPyHTML-modernStyling: true}}>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>
+		    This is a simple HTML page generated using PyHTML.
+		</p>
+		<p class="green">
+			The test was successful if this text is green.
+		</p>
+		<{{evalPyHTML-style: p.green {color: green;} :style-}}>
+	</body>
+</html>

@@ -6,6 +6,8 @@ BETA.enable()
 addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
 addSchablone("includeStyleTest", loadFromFile("./includeStyleTest.pyhtml"))
 addSchablone("scriptInclusionTest", loadFromFile("./scriptInclusionTest.pyhtml"))
+addSchablone("styleInclusionTest", loadFromFile("./styleInclusionTest.pyhtml"))
+addSchablone("inclusionTest", loadFromFile("./staticResourceInclusionTest.pyhtml"))
 
 def contentGeneratingFunction(path: str) -> str:
     """
@@ -24,6 +26,10 @@ def contentGeneratingFunction(path: str) -> str:
         case "/scriptInclusionTest":
             return SCHABLONEN["scriptInclusionTest"].decoded()
             # successfull
+        case "/styleInclusionTest":
+            return SCHABLONEN["styleInclusionTest"].decoded()
+        case "/inclusionTest": 
+            return SCHABLONEN["inclusionTest"].decoded()
         case _:
             return "404 Not Found"
 
