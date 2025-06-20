@@ -1,5 +1,5 @@
 <{{evalPyHTML}}><title>Hello World</title>
-		<{{evalPyHTML-include: https://leanderkafemann.github.io/PyWSGIRef-Backend/styling/modernStyle.css,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/alert.js,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/favicon.ico,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/manifest.json}}>
+		<{{evalPyHTML-include: https://leanderkafemann.github.io/PyWSGIRef-Backend/styling/modernStyling.css,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/alert.js,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/favicon.ico,https://leanderkafemann.github.io/PyWSGIRef-Backend/tests/manifest.json :include-}}>
 	</head>
 	<body>
 		<h1>Hello World</h1>

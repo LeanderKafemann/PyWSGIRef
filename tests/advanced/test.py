@@ -28,6 +28,7 @@ def contentGeneratingFunction(path: str) -> str:
             # successfull
         case "/styleInclusionTest":
             return SCHABLONEN["styleInclusionTest"].decoded()
+            # successfull
         case "/inclusionTest": 
             return SCHABLONEN["inclusionTest"].decoded()
         case _:
