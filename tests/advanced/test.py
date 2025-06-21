@@ -35,9 +35,7 @@ def contentGeneratingFunction(path: str) -> str:
             # successfull
         case "/evalTest":
             import datetime
-            testPyHTML = SCHABLONEN["evalTest"]
-            testPyHTML.context = globals()
-            return testPyHTML.decoded()
+            return SCHABLONEN["evalTest"].decodedContext(globals())
             # not possible until 1.1.10 or greater
         case _:
             return "404 Not Found"

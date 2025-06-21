@@ -137,3 +137,11 @@ class PyHTML:
         """
         self.decode()
         return self.html
+
+    def decodedContext(self, context: dict) -> str:
+        """
+        Returns the decoded HTML content with the provided context.
+        """
+        self.context = context
+        self.decode()
+        return self.html
