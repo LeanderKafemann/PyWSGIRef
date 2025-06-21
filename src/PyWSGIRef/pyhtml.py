@@ -10,6 +10,7 @@ from .patterns import *
 class PyHTML:
     def __init__(self, html: str = DEFAULT):
         self.html = html
+        self.context = None
 
     def _replace_eval_phrase(self):
         """
@@ -76,19 +77,19 @@ class PyHTML:
             replacement = f"<style>{style_content}</style>"
             self.html = self.html[:idx] + replacement + self.html[idxEnd:]
 
-    def _replace_eval_blocks(self, context=None):
+    def _replace_eval_blocks(self):
         """
         Replaces eval replacement phrases with evaluated Python expressions.
         WARNING: This method uses eval, which can execute arbitrary code.
         """
-        if context is None:
-            context = {}
+        if self.context is None:
+            self.context = {}
         for match in re.finditer(EVAL_BLOCK_PATTERN, self.html, re.DOTALL):
             idx, idxEnd = match.span()
             code = match.group(1).strip()
             try:
                 # eval für Ausdrücke, exec für Statements
-                result = str(eval(code, {}, context))
+                result = str(eval(code, {}, self.context))
             except Exception as e:
                 result = f"<b>EvalError: {e}</b>"
             self.html = self.html[:idx] + result + self.html[idxEnd:]

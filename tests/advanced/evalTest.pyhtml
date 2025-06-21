@@ -1,0 +1,12 @@
+<{{evalPyHTML}}><title>Hello World</title>
+		<{{evalPyHTML-modernStyling: true}}>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>
+		    This is a test whether Python evaluation works in PyHTML files.<br/>
+			The test is successful if you see the time:<br/>
+			<{{evalPyHTML-eval: str(datetime.datetime.now()) :eval-}}>
+		</p>
+	</body>
+</html>
