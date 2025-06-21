@@ -175,8 +175,6 @@ from PyWSGIRef import BETA
 BETA.enable()
 ```
 Currently to be tested are:<br/>
-- PyHTML style blocks<br/>
-- PyHTML favicon support<br/>
 - PyHTML include static resource blocks<br/><br/>
 
 Thanks a lot for helping improving PyWSGIRef!
