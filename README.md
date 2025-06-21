@@ -175,6 +175,8 @@ from PyWSGIRef import BETA
 BETA.enable()
 ```
 Currently to be tested are:<br/>
+- PyHTML python script blocks<br/>
+- PyHTML python if clause blocks<br/>
 - PyHTML include static resource blocks<br/><br/>
 
 Thanks a lot for helping improving PyWSGIRef!

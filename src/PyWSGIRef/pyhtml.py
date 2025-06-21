@@ -76,6 +76,46 @@ class PyHTML:
             replacement = f"<style>{style_content}</style>"
             self.html = self.html[:idx] + replacement + self.html[idxEnd:]
 
+    def _replace_eval_blocks(self, context=None):
+        """
+        Replaces eval replacement phrases with evaluated Python expressions.
+        WARNING: This method uses eval, which can execute arbitrary code.
+        """
+        if context is None:
+            context = {}
+        for match in re.finditer(EVAL_BLOCK_PATTERN, self.html, re.DOTALL):
+            idx, idxEnd = match.span()
+            code = match.group(1).strip()
+            try:
+                # eval für Ausdrücke, exec für Statements
+                result = str(eval(code, {}, context))
+            except Exception as e:
+                result = f"<b>EvalError: {e}</b>"
+            self.html = self.html[:idx] + result + self.html[idxEnd:]
+
+    def _replace_if_blocks(self, context=None):
+        """
+        Replaces with html code based on the evaluation of conditions in if blocks.
+        """
+        if context is None:
+            context = {}
+        # re.DOTALL für mehrzeilige Blöcke
+        while True:
+            match = re.search(IF_BLOCK_PATTERN, self.html, re.DOTALL)
+            if not match:
+                break
+            condition = match.group(1).strip()
+            if_content = match.group(2)
+            else_content = match.group(5) if match.group(5) is not None else ""
+            try:
+                if eval(condition, {}, context):
+                    replacement = if_content
+                else:
+                    replacement = else_content
+            except Exception as e:
+                replacement = f"<b>IfEvalError: {e}</b>"
+            self.html = self.html[:match.start()] + replacement + self.html[match.end():]
+
     def decode(self):
         """
         Decodes the HTML content by replacing specific phrases and applying modern styling.
@@ -87,6 +127,8 @@ class PyHTML:
         self._replace_style_blocks()
         if BETA.value:
             self._replace_includes()
+            self._replace_eval_blocks()
+            self._replace_if_blocks()
 
     def decoded(self) -> str:
         """
