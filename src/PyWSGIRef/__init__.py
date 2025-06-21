@@ -69,5 +69,5 @@ def setUpServer(application: Callable, port: int = 8000) -> WSGIServer:
     No additional Schablonen can be loaded from the web.
     """
     finished.set_true()
-    server = make_server('', 8000, application)
+    server = make_server('', port, application)
     return server
