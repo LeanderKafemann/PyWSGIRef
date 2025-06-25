@@ -35,8 +35,8 @@ def contentGeneratingFunction(path: str) -> str:
             # successfull
         case "/evalTest":
             import datetime
-            return SCHABLONEN["evalTest"].decodedContext(globals())
-            # not possible until 1.1.10 or greater
+            return SCHABLONEN["evalTest"].decodedContext(locals())
+            # successful
         case _:
             return "404 Not Found"
 

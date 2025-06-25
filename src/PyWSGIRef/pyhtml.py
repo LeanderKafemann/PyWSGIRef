@@ -1,3 +1,4 @@
+import html
 import re
 from naturalsize import replStrPassage
 
@@ -131,17 +132,20 @@ class PyHTML:
             self._replace_eval_blocks()
             self._replace_if_blocks()
 
-    def decoded(self) -> str:
+    def decoded(self, cacheDecoded: bool = False) -> str:
         """
         Returns the decoded HTML content.
         """
+        backup = self.html
         self.decode()
-        return self.html
+        _return = self.html
+        if not cacheDecoded:
+            self.html = backup
+        return _return
 
-    def decodedContext(self, context: dict) -> str:
+    def decodedContext(self, context: dict, cacheDecoded: bool = False) -> str:
         """
         Returns the decoded HTML content with the provided context.
         """
         self.context = context
-        self.decode()
-        return self.html
+        return self.decoded(cacheDecoded)
