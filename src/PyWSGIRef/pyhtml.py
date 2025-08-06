@@ -127,8 +127,8 @@ class PyHTML:
         self._replace_modern_styling()
         self._replace_script_blocks()
         self._replace_style_blocks()
+        self._replace_includes()
         if BETA.value:
-            self._replace_includes()
             self._replace_eval_blocks()
             self._replace_if_blocks()
 

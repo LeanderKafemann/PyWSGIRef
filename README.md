@@ -142,6 +142,9 @@ just use the <code><{{evalPyHTML}}></code> phrase at the end of the document and
 PyWSGIRef will automatically add the closing html and body tags.<br/><br/>
 You can also add PyWSGIRef's own, featured modern stylesheet using:<br/>
 <code><{{evalPyHTML-modernStyling: true}}></code> inside the head block of your PyHTML file.<br/><br/>
+Ýou may add your own static resources like CSS or JavaScript files using the <code><{{evalPyHTML-include: ... :include-}}></code> phrase.<br/>
+Different static resources can be included by separating them with a comma.<br/>
+You may include CSS, JS, JSON and ICO files.<br/><br/>
 With the <code><{{evalPyHTML-script: alert('Hello, World!'); :script-}}></code> phrase,<br/>
 you can add a script block anywhere inside your PyHTML file.<br/>
 Using pretty much the same syntax, you can also add a style block using
@@ -176,8 +179,7 @@ BETA.enable()
 ```
 Currently to be tested are:<br/>
 - PyHTML python script blocks<br/>
-- PyHTML python if clause blocks<br/>
-- PyHTML include static resource blocks<br/><br/>
+- PyHTML python if clause blocks<br/><br/>
 
 Thanks a lot for helping improving PyWSGIRef!
 ### More coming soon
