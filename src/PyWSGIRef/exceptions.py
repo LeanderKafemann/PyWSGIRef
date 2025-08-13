@@ -62,3 +62,11 @@ class BetaAlreadyEnabledError(BooleanAlreadyTrueError):
     def __init__(self, message="Beta mode is already enabled."):
         self.message = message
         super().__init__(self.message)
+
+class AccessToTemplateForbidden(Exception):
+    """
+    Raised when trying to access a template that is not allowed.
+    """
+    def __init__(self, message="Access to this template is forbidden."):
+        self.message = message
+        super().__init__(self.message)

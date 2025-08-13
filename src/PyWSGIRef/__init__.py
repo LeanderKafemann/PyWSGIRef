@@ -17,7 +17,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 12), "Author": "Leander Kafemann", "date": "06.08.2025",\
+    return {"Version": (1, 1, 13), "Author": "Leander Kafemann", "date": "13.08.2025",\
             "recommend": ("Buero by LK",  "pyimager by LK"), "feedbackTo": "update-bot@lk.kafemann.berlin"}
 
 SCHABLONEN = TemplateDict()
@@ -31,12 +31,13 @@ def addSchablone(name: str, content: str):
         raise ServerAlreadyGeneratedError()
     SCHABLONEN[name] = PyHTML(content)
 
-def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False) -> Callable:
+def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False, getIP: bool = False) -> Callable:
     """
     Returns a WSGI application object based on your contentGeneratingFunction.
     The contentGeneratingFunction should take a single argument (the path) and return the content as a string.
     If advanced is True, the contentGeneratingFunction will receive a FieldStorage object as the second argument.
     If setAdvancedHeaders is True, it will allow you to set advanced headers for the response.
+    If getIP is True, the contentGeneratingFunction will receive the IP address of the client as an additional argument.
     """
     if not callable(contentGeneratingFunction):
         raise InvalidCallableError()
@@ -49,13 +50,22 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
         if advanced:
             storage = FieldStorage(fp=environ.get("wsgi.input"), environ=environ, keep_blank_values=True)
             if setAdvancedHeaders:
-                content, type_, status = contentGeneratingFunction(environ["PATH_INFO"], storage)
+                if getIP:
+                    content, type_, status = contentGeneratingFunction(environ["PATH_INFO"], storage, environ["HTTP_X_REAL_IP"])
+                else:
+                    content, type_, status = contentGeneratingFunction(environ["PATH_INFO"], storage)
             else:
-                content = contentGeneratingFunction(environ["PATH_INFO"], storage)
+                if getIP:
+                    content = contentGeneratingFunction(environ["PATH_INFO"], storage, environ["HTTP_X_REAL_IP"])
+                else:
+                    content = contentGeneratingFunction(environ["PATH_INFO"], storage)
         else:
             if setAdvancedHeaders:
                 raise AdvancedHeadersWithoutAdvancedModeError()
-            content = contentGeneratingFunction(environ["PATH_INFO"])
+            if getIP:
+                content = contentGeneratingFunction(environ["PATH_INFO"], environ["HTTP_X_REAL_IP"])
+            else:
+                content = contentGeneratingFunction(environ["PATH_INFO"])
         headers = [("Content-Type", type_),
                    ("Content-Length", str(len(content))),
                    ('Access-Control-Allow-Origin', '*')]
