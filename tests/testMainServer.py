@@ -1,3 +1,3 @@
-from PyWSGIRef import *
+from PyWSGIRef.simpleServer import *
 
 main()

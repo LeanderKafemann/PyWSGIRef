@@ -20,7 +20,7 @@ class PyHTML:
         if self.html.startswith(EVAL_PYHTML):
             self.html = START_REPLACE + self.html[len(EVAL_PYHTML):]
         if self.html.endswith(EVAL_PYHTML):
-            self.html = self.html[:-len(EVAL_PYHTML)-1] + END_REPLACE
+            self.html = self.html[:-len(EVAL_PYHTML)] + END_REPLACE
 
     def _replace_modern_styling(self):
         """
