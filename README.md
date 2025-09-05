@@ -180,7 +180,8 @@ BETA.enable()
 Currently to be tested are:<br/>
 - PyHTML python script blocks<br/>
 - PyHTML python if clause blocks<br/>
-- stats for the application object<br/><br/>
+- application object running time measuring<br/>
+- application object counter of access<br/><br/>
 
 Thanks a lot for helping improving PyWSGIRef!
 ### More coming soon

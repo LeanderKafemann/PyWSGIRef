@@ -18,12 +18,11 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 14), "Author": "Leander Kafemann", "date": "05.09.2025",\
+    return {"Version": (1, 1, 15), "Author": "Leander Kafemann", "date": "05.09.2025",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
 STATS = Stats()
-COUNT = 0
 
 def addSchablone(name: str, content: str):
     """
@@ -35,7 +34,7 @@ def addSchablone(name: str, content: str):
     SCHABLONEN[name] = PyHTML(content)
 
 def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False,\
-                          getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = True) -> Callable:
+                          getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = False) -> Callable:
     """
     Returns a WSGI application object based on your contentGeneratingFunction.
     The contentGeneratingFunction should take a single argument (the path) and return the content as a string.
@@ -43,7 +42,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
     If setAdvancedHeaders is True, it will allow you to set advanced headers for the response.
     If getIP is True, the contentGeneratingFunction will receive the IP address of the client as an additional argument.
     If vercelPythonHosting is True, your application object will be optimized for Vercel's unusual WSGI methods.
-    If getStats is True, stats are saved in the STATS object.
+    If getStats is True, stats are saved in the STATS object (BETA).
     Locks BETA mode.
     """
     if not callable(contentGeneratingFunction):
@@ -56,8 +55,8 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
         if getStats:
             if not BETA.value:
                 raise BetaNotEnabledError()
-            COUNT += 1
-            perfTime = STATS.startPerfTime("applicationCallNr"+str(COUNT))
+            STATS.count.increase()
+            perfTime = STATS.startPerfTime("applicationCallNr"+str(STATS.count.count))
         type_ = "text/html" 
         status = "200 OK"
         if advanced:
