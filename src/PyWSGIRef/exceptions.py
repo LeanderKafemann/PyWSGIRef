@@ -70,3 +70,19 @@ class AccessToTemplateForbidden(Exception):
     def __init__(self, message="Access to this template is forbidden."):
         self.message = message
         super().__init__(self.message)
+
+class BetaAlreadyLocked(Exception):
+    """
+    Raised when trying to activate BETA mode when it is already locked.
+    """
+    def __init__(self, message="BETA mode already locked"):
+        self.message = message
+        super().__init__(self.message)
+
+class BetaNotEnabledError(Exception):
+    """
+    Raised when trying to use a BETA feature when BETA mode is not enabled.
+    """
+    def __init__(self, message="BETA mode is not enabled."):
+        self.message = message
+        super().__init__(self.message)

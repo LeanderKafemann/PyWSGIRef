@@ -7,6 +7,7 @@
 
 *.pyhtml linguist-language=PyHTML
 *.pyhtml linguist-detectable=true
+*.pyhtml linguist-documentation=false
 
 *.json linguist-language=JSON
 *.json linguist-detectable=true

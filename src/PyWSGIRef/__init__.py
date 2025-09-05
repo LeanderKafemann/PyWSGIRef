@@ -12,15 +12,18 @@ from .templateDict import TemplateDict
 from .beta import BETA
 from .loadContent import *
 from .finished import finished
+from .stats import Stats
 
 def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 13), "Author": "Leander Kafemann", "date": "13.08.2025",\
-            "recommend": ("Buero by LK",  "pyimager by LK"), "feedbackTo": "update-bot@lk.kafemann.berlin"}
+    return {"Version": (1, 1, 14), "Author": "Leander Kafemann", "date": "05.09.2025",\
+            "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
+STATS = Stats()
+COUNT = 0
 
 def addSchablone(name: str, content: str):
     """
@@ -31,20 +34,30 @@ def addSchablone(name: str, content: str):
         raise ServerAlreadyGeneratedError()
     SCHABLONEN[name] = PyHTML(content)
 
-def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False, getIP: bool = False) -> Callable:
+def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False,\
+                          getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = True) -> Callable:
     """
     Returns a WSGI application object based on your contentGeneratingFunction.
     The contentGeneratingFunction should take a single argument (the path) and return the content as a string.
     If advanced is True, the contentGeneratingFunction will receive a FieldStorage object as the second argument.
     If setAdvancedHeaders is True, it will allow you to set advanced headers for the response.
     If getIP is True, the contentGeneratingFunction will receive the IP address of the client as an additional argument.
+    If vercelPythonHosting is True, your application object will be optimized for Vercel's unusual WSGI methods.
+    If getStats is True, stats are saved in the STATS object.
+    Locks BETA mode.
     """
     if not callable(contentGeneratingFunction):
         raise InvalidCallableError()
+    BETA.lock()
     def simpleApplication(environ, start_response) -> list:
         """
         A simple WSGI application object that serves as a template.
         """
+        if getStats:
+            if not BETA.value:
+                raise BetaNotEnabledError()
+            COUNT += 1
+            perfTime = STATS.startPerfTime("applicationCallNr"+str(COUNT))
         type_ = "text/html" 
         status = "200 OK"
         if advanced:
@@ -70,13 +83,15 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
                    ("Content-Length", str(len(content))),
                    ('Access-Control-Allow-Origin', '*')]
         start_response(status, headers)
-        return [content.encode("utf-8")]
+        STATS.stopPerfTime(perfTime)
+        if not vercelPythonHosting:
+            return [content.encode("utf-8")]
     return simpleApplication
 
 def setUpServer(application: Callable, port: int = 8000) -> WSGIServer:
     """
     Creates a WSGI server.
-    No additional Schablonen can be loaded from the web.
+    No additional templates can be loaded from the web.
     """
     finished.set_true()
     server = make_server('', port, application)
