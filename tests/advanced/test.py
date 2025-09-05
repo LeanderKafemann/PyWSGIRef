@@ -3,12 +3,8 @@ from PyWSGIRef import *
 # enable beta mode
 BETA.enable()
 
-addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
-addSchablone("includeStyleTest", loadFromFile("./includeStyleTest.pyhtml"))
-addSchablone("scriptInclusionTest", loadFromFile("./scriptInclusionTest.pyhtml"))
-addSchablone("styleInclusionTest", loadFromFile("./styleInclusionTest.pyhtml"))
-addSchablone("inclusionTest", loadFromFile("./staticResourceInclusionTest.pyhtml"))
-addSchablone("evalTest", loadFromFile("./evalTest.pyhtml"))
+for i in ["helloWorld", "includeStyleTest", "scriptInclusionTest", "styleInclusionTest", "inclusionTest", "evalTest"]:
+    addSchablone(i, loadFromFile("./"+i+".pyhtml"))
 
 def contentGeneratingFunction(path: str) -> str:
     """
