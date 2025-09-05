@@ -18,7 +18,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 15), "Author": "Leander Kafemann", "date": "05.09.2025",\
+    return {"Version": (1, 1, 16), "Author": "Leander Kafemann", "date": "05.09.2025",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
@@ -82,7 +82,8 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
                    ("Content-Length", str(len(content))),
                    ('Access-Control-Allow-Origin', '*')]
         start_response(status, headers)
-        STATS.stopPerfTime(perfTime)
+        if getStats:
+            STATS.stopPerfTime(perfTime)
         if not vercelPythonHosting:
             return [content.encode("utf-8")]
     return simpleApplication
