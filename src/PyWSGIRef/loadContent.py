@@ -6,11 +6,12 @@ import requests
 from .exceptions import *
 from .finished import finished
 
-def loadFromWeb(url: str) -> str:
+def loadFromWeb(url: str, overrideException: bool = False) -> str:
     """
     Loads content from the given URL with the given data.
+    Overrides ServerAlreadyGeneratedError if overrideException is True.
     """
-    if finished.value:
+    if finished.value and not overrideException:
         raise ServerAlreadyGeneratedError()
     if not url.endswith(".pyhtml"):
         raise InvalidFiletypeError()
