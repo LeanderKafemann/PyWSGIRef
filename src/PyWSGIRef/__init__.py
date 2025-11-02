@@ -18,7 +18,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 16), "Author": "Leander Kafemann", "date": "05.09.2025",\
+    return {"Version": (1, 1, 17), "Author": "Leander Kafemann", "date": "02.11.2025",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
@@ -34,7 +34,8 @@ def addSchablone(name: str, content: str):
     SCHABLONEN[name] = PyHTML(content)
 
 def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False,\
-                          getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = False) -> Callable:
+                          getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = False,
+                          customEncoding: bool = False) -> Callable:
     """
     Returns a WSGI application object based on your contentGeneratingFunction.
     The contentGeneratingFunction should take a single argument (the path) and return the content as a string.
@@ -43,6 +44,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
     If getIP is True, the contentGeneratingFunction will receive the IP address of the client as an additional argument.
     If vercelPythonHosting is True, your application object will be optimized for Vercel's unusual WSGI methods.
     If getStats is True, stats are saved in the STATS object (BETA).
+    If customEncoding is True, the contentGeneratingFunction has to encode the content itself.
     Locks BETA mode.
     """
     if not callable(contentGeneratingFunction):
@@ -85,6 +87,8 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
         if getStats:
             STATS.stopPerfTime(perfTime)
         if not vercelPythonHosting:
+            if customEncoding:
+                return content
             return [content.encode("utf-8")]
     return simpleApplication
 
