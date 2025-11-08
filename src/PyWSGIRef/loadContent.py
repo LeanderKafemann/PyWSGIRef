@@ -17,8 +17,8 @@ def loadFromWeb(url: str, overrideException: bool = False) -> str:
         raise InvalidFiletypeError()
 
     # trick GitHub Pages guardian
-    headers = {"User-Agent": "Mozilla/5.0", "realAccessDeviceMonitorAgent": "PyWSGIRef/1.1"}
-    rq = requests.get(url, headers=headers)
+    headers = {"User-Agent": "Mozilla/5.0"}
+    rq = requests.get(url, headers=headers, data={"realAccessDeviceMonitorAgent": "PyWSGIRef/1.1"})
     if rq.status_code != 200:
         raise AccessToTemplateForbidden()
     rq_content = rq.content

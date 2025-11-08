@@ -1,9 +1,10 @@
 import datetime
 
 class PerformanceTime:
-    def __init__(self, title: str):
+    def __init__(self, title: str, data: dict = {}):
         self.start = datetime.datetime.now()
         self.title = title
+        self.data = data
     def stop(self):
         self.end = datetime.datetime.now()
 
@@ -29,10 +30,11 @@ class Stats:
         perfTime.stop()
         self.performanceTimes.append(perfTime)
 
-    def export_stats(self, filename: str = None) -> str:
+    def export_stats(self, filename: str = None, html: bool = True) -> str:
         """
         Exports all current stats as a formatted string.
         If filename is given, it will also save the stats to that file.
+        If html is true, the output will be formatted as HTML.
         """
         lines = []
         lines.append("PyWSGIRef Statistic-Export")
@@ -54,7 +56,8 @@ class Stats:
                     lines.append(f"  {i}. {title}: started at {start} (not stopped until now)")
                 else:
                     lines.append(f"  {i}. {title}: (no time data)")
-        result = "\n".join(lines)
+                lines[-1] = lines[-1] + " data: " + ", ".join(f"{k}={v}" for k, v in perf.data.items())
+        result = "\n".join(lines) if not html else "<br>".join(lines)
         if filename:
             if not filename.endswith(".pywsgirefstats"):
                 filename += ".pywsgirefstats"

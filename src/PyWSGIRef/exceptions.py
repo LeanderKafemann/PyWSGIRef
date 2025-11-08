@@ -86,3 +86,19 @@ class BetaNotEnabledError(Exception):
     def __init__(self, message="BETA mode is not enabled."):
         self.message = message
         super().__init__(self.message)
+
+class VercelIncompabilityError(Exception):
+    """
+    Raised when trying to use Vercel hosting without enabling Vercel compatibility.
+    """
+    def __init__(self, message="Vercel compatibility is not enabled."):
+        self.message = message
+        super().__init__(self.message)
+
+class OutdatedPyWSGIRefVersionError(Exception):
+    """
+    Raised when the PyWSGIRef version is outdated and does not support a requested feature.
+    """
+    def __init__(self, message="The PyWSGIRef version is outdated and does not support this feature."):
+        self.message = message
+        super().__init__(self.message)

@@ -18,7 +18,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 17), "Author": "Leander Kafemann", "date": "02.11.2025",\
+    return {"Version": (1, 1, 18), "Author": "Leander Kafemann", "date": "08.11.2025",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
@@ -35,7 +35,7 @@ def addSchablone(name: str, content: str):
 
 def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False,\
                           getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = False,
-                          customEncoding: bool = False) -> Callable:
+                          advancedStats: bool = False, customEncoding: bool = False) -> Callable:
     """
     Returns a WSGI application object based on your contentGeneratingFunction.
     The contentGeneratingFunction should take a single argument (the path) and return the content as a string.
@@ -44,6 +44,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
     If getIP is True, the contentGeneratingFunction will receive the IP address of the client as an additional argument.
     If vercelPythonHosting is True, your application object will be optimized for Vercel's unusual WSGI methods.
     If getStats is True, stats are saved in the STATS object (BETA).
+    If advancedStats is True, more detailed stats are collected (BETA).
     If customEncoding is True, the contentGeneratingFunction has to encode the content itself.
     Locks BETA mode.
     """
@@ -59,10 +60,12 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
                 raise BetaNotEnabledError()
             STATS.count.increase()
             perfTime = STATS.startPerfTime("applicationCallNr"+str(STATS.count.count))
+        storage = FieldStorage(fp=environ.get("wsgi.input"), environ=environ, keep_blank_values=True)
+        if storage.getvalue("realAccessDeviceMonitorAgent", "") not in ["PyWSGIRef/1.1", ""]:
+            raise OutdatedPyWSGIRefVersionError("Access with outdated PyWSGIRef version detected. Please update to the latest version.")
         type_ = "text/html" 
         status = "200 OK"
         if advanced:
-            storage = FieldStorage(fp=environ.get("wsgi.input"), environ=environ, keep_blank_values=True)
             if setAdvancedHeaders:
                 if getIP:
                     content, type_, status = contentGeneratingFunction(environ["PATH_INFO"], storage, environ["HTTP_X_REAL_IP"])
@@ -81,15 +84,20 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
             else:
                 content = contentGeneratingFunction(environ["PATH_INFO"])
         headers = [("Content-Type", type_),
-                   ("Content-Length", str(len(content))),
+                   ("Content-Length", str(len(content if not customEncoding else content[0]))),
                    ('Access-Control-Allow-Origin', '*')]
         start_response(status, headers)
         if getStats:
             STATS.stopPerfTime(perfTime)
+            perfTime.data["ip"] = environ.get("HTTP_X_REAL_IP", "unknown")
+            perfTime.data["path"] = environ.get("PATH_INFO", "unknown")
         if not vercelPythonHosting:
             if customEncoding:
                 return content
             return [content.encode("utf-8")]
+        else:
+            if customEncoding:
+                raise VercelIncompabilityError("customEncoding cannot be used with vercelPythonHosting.")
     return simpleApplication
 
 def setUpServer(application: Callable, port: int = 8000) -> WSGIServer:
