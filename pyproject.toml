@@ -1,6 +1,6 @@
 [project]
 name = "PyWSGIRef"
-version = "1.1.18"
+version = "1.1.19"
 authors = [
   {name="Leander Kafemann", email="leander.kafemann+python@icloud.com" },
 ]

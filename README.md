@@ -183,5 +183,8 @@ Currently to be tested are:<br/>
 - application object running time measuring<br/>
 - application object counter of access<br/><br/>
 
+
+Please report any bugs you find in the GitHub repository and suggest new features!<br/><br/>
+
 Thanks a lot for helping improving PyWSGIRef!
 ### More coming soon

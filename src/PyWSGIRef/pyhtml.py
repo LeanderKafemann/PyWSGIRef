@@ -1,4 +1,3 @@
-import html
 import re
 from naturalsize import replStrPassage
 
@@ -62,21 +61,29 @@ class PyHTML:
         """
         Replaces script replacement phrases with JS scripts.
         """
+        offset = 0
         for match in re.finditer(SCRIPT_PATTERN, self.html, re.DOTALL):
             idx, idxEnd = match.span()
+            idx += offset
+            idxEnd += offset
             script_content = match.group(1).strip()
             replacement = f"<script>{script_content}</script>"
             self.html = self.html[:idx] + replacement + self.html[idxEnd:]
+            offset += len(replacement) - (idxEnd - idx)
 
     def _replace_style_blocks(self):
         """
         Replaces style replacement phrases with CSS styles.
         """
+        offset = 0
         for match in re.finditer(STYLE_PATTERN, self.html, re.DOTALL):
             idx, idxEnd = match.span()
+            idx += offset
+            idxEnd += offset
             style_content = match.group(1).strip()
             replacement = f"<style>{style_content}</style>"
             self.html = self.html[:idx] + replacement + self.html[idxEnd:]
+            offset += len(replacement) - (idxEnd - idx)
 
     def _replace_eval_blocks(self):
         """
@@ -85,23 +92,26 @@ class PyHTML:
         """
         if self.context is None:
             self.context = {}
+        offset = 0
         for match in re.finditer(EVAL_BLOCK_PATTERN, self.html, re.DOTALL):
             idx, idxEnd = match.span()
+            idx += offset
+            idxEnd += offset
             code = match.group(1).strip()
             try:
-                # eval für Ausdrücke, exec für Statements
                 result = str(eval(code, {}, self.context))
             except Exception as e:
                 result = f"<b>EvalError: {e}</b>"
             self.html = self.html[:idx] + result + self.html[idxEnd:]
+            offset += len(result) - (idxEnd - idx)
 
     def _replace_if_blocks(self, context=None):
         """
         Replaces with html code based on the evaluation of conditions in if blocks.
         """
         if context is None:
-            context = {}
-        # re.DOTALL für mehrzeilige Blöcke
+            context = self.context if self.context else {}
+        
         while True:
             match = re.search(IF_BLOCK_PATTERN, self.html, re.DOTALL)
             if not match:

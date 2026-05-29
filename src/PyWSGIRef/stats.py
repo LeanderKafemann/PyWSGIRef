@@ -1,10 +1,10 @@
 import datetime
 
 class PerformanceTime:
-    def __init__(self, title: str, data: dict = {}):
+    def __init__(self, title: str, data: dict = None):
         self.start = datetime.datetime.now()
         self.title = title
-        self.data = data
+        self.data = data if data is not None else {}
     def stop(self):
         self.end = datetime.datetime.now()
 
@@ -56,7 +56,8 @@ class Stats:
                     lines.append(f"  {i}. {title}: started at {start} (not stopped until now)")
                 else:
                     lines.append(f"  {i}. {title}: (no time data)")
-                lines[-1] = lines[-1] + " data: " + ", ".join(f"{k}={v}" for k, v in perf.data.items())
+                if perf.data:
+                    lines[-1] = lines[-1] + " data: " + ", ".join(f"{k}={v}" for k, v in perf.data.items())
         result = "\n".join(lines) if not html else "<br>".join(lines)
         if filename:
             if not filename.endswith(".pywsgirefstats"):
