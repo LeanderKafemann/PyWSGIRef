@@ -1,11 +1,10 @@
 from PyWSGIRef import *
 
-#test successfull
-
 # enable beta mode
 BETA.enable()
 
 addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
+addSchablone("ifTest", loadFromFile("./ifTest.pyhtml"))
 addSchablone("evalTest", loadFromFile("./evalTest.pyhtml"))
 
 def contentGeneratingFunction(path: str) -> str:
@@ -19,17 +18,18 @@ def contentGeneratingFunction(path: str) -> str:
         case "/hello":
             return SCHABLONEN["helloWorld"].decoded()
             # successfull
+        case "/ifTest": 
+            import datetime
+            return SCHABLONEN["ifTest"].decodedContext(locals())
+            # successfull
         case "/evalTest":
             import datetime
             return SCHABLONEN["evalTest"].decodedContext(locals())
-            # successfull
-        case "/stats":
-            return STATS.export_stats()
-            # successfull
+            # successful
         case _:
             return "404 Not Found"
 
-application = makeApplicationObject(contentGeneratingFunction, getStats=True)
+application = makeApplicationObject(contentGeneratingFunction)
 server = setUpServer(application)
 
 print("Successfully started WSGI server on port 8000.")

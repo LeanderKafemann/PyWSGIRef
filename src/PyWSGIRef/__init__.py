@@ -51,6 +51,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
     if not callable(contentGeneratingFunction):
         raise InvalidCallableError()
     BETA.lock()
+
     def simpleApplication(environ, start_response) -> list:
         """
         A simple WSGI application object that serves as a template.
@@ -98,6 +99,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
         else:
             if customEncoding:
                 raise VercelIncompabilityError("customEncoding cannot be used with vercelPythonHosting.")
+
     return simpleApplication
 
 def setUpServer(application: Callable, port: int = 8000) -> WSGIServer:
