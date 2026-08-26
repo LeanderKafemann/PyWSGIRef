@@ -79,7 +79,8 @@ html = loadFromFile('index.pyhtml')
 html = loadFromWeb('https://example.com/index.pyhtml')
 ```
 This is useful for serving dynamic HTML content in your WSGI application.<br/>
-The funcs are callable unless you set up a server.
+The funcs are callable unless you set up a server.<br/>
+You can also add multiple PyHTML files from the web at the same time using the <code>multiWebInit</code> function.
 ### Using Templates
 PyWSGIRef also provides a simple way to use templates in your WSGI application:
 ```python

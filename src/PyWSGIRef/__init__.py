@@ -18,7 +18,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 19), "Author": "Leander Kafemann", "date": "29.05.2026",\
+    return {"Version": (1, 1, 20), "Author": "Leander Kafemann", "date": "26.08.2026",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
@@ -32,6 +32,21 @@ def addSchablone(name: str, content: str):
     if finished.value:
         raise ServerAlreadyGeneratedError()
     SCHABLONEN[name] = PyHTML(content)
+
+def multiWebInit(baseURL: str, templateNames: list[str], overrideException: bool = False) -> list[str]:
+    """
+    Loads multiple templates from the web and adds them to the SCHABLONEN dictionary.
+    Returns a list of the names of the loaded templates.
+    """
+    if finished.value and not overrideException:
+        raise ServerAlreadyGeneratedError()
+    loadedTemplates = []
+    for name in templateNames:
+        url = f"{baseURL}/{name}.pyhtml"
+        content = loadFromWeb(url, overrideException=overrideException)
+        addSchablone(name, content)
+        loadedTemplates.append(name)
+    return loadedTemplates
 
 def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False,\
                           getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = False,
@@ -62,8 +77,13 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
             STATS.count.increase()
             perfTime = STATS.startPerfTime("applicationCallNr"+str(STATS.count.count))
         storage = FieldStorage(fp=environ.get("wsgi.input"), environ=environ, keep_blank_values=True)
-        if storage.getvalue("realAccessDeviceMonitorAgent", "") not in ["PyWSGIRef/1.1", ""]:
-            raise OutdatedPyWSGIRefVersionError("Access with outdated PyWSGIRef version detected. Please update to the latest version.")
+        try:
+            if storage.getvalue("realAccessDeviceMonitorAgent", "") not in ["PyWSGIRef/1.1", ""]:
+                raise OutdatedPyWSGIRefVersionError("Access with outdated PyWSGIRef version detected. Please update to the latest version.")
+        except TypeError:
+            pass
+        except:
+            raise InvalidEnvironError("Invalid WSGI environ and/or FieldStorage keys detected.")
         type_ = "text/html" 
         status = "200 OK"
         if advanced:

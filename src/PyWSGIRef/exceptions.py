@@ -102,3 +102,11 @@ class OutdatedPyWSGIRefVersionError(Exception):
     def __init__(self, message="The PyWSGIRef version is outdated and does not support this feature."):
         self.message = message
         super().__init__(self.message)
+
+class InvalidEnvironError(Exception):
+    """
+    Raised when the WSGI environ is invalid or missing required keys.
+    """
+    def __init__(self, message="Invalid WSGI environ."):
+        self.message = message
+        super().__init__(self.message)
