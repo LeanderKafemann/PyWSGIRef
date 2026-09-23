@@ -5,7 +5,8 @@
 *.toml linguist-language=Toml
 *.toml linguist-detectable=true
 
-*.pyhtml linguist-language=PyHTML
+# *.pyhtml linguist-language=PyHTML
+*.pyhtml linguist-language=PHP
 *.pyhtml linguist-detectable=true
 *.pyhtml linguist-documentation=false
 *.pyhtml linguist-vendored=false
