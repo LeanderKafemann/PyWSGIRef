@@ -18,7 +18,7 @@ def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 20), "Author": "Leander Kafemann", "date": "26.08.2026",\
+    return {"Version": (1, 1, 21), "Author": "Leander Kafemann", "date": "24.09.2026",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
@@ -50,7 +50,7 @@ def multiWebInit(baseURL: str, templateNames: list[str], overrideException: bool
 
 def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = False, setAdvancedHeaders: bool = False,\
                           getIP: bool = False, vercelPythonHosting: bool = False, getStats: bool = False,
-                          advancedStats: bool = False, customEncoding: bool = False) -> Callable:
+                          customEncoding: bool = False) -> Callable:
     """
     Returns a WSGI application object based on your contentGeneratingFunction.
     The contentGeneratingFunction should take a single argument (the path) and return the content as a string.
@@ -59,7 +59,6 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
     If getIP is True, the contentGeneratingFunction will receive the IP address of the client as an additional argument.
     If vercelPythonHosting is True, your application object will be optimized for Vercel's unusual WSGI methods.
     If getStats is True, stats are saved in the STATS object (BETA).
-    If advancedStats is True, more detailed stats are collected (BETA).
     If customEncoding is True, the contentGeneratingFunction has to encode the content itself.
     Locks BETA mode.
     """
@@ -72,8 +71,6 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
         A simple WSGI application object that serves as a template.
         """
         if getStats:
-            if not BETA.value:
-                raise BetaNotEnabledError()
             STATS.count.increase()
             perfTime = STATS.startPerfTime("applicationCallNr"+str(STATS.count.count))
         storage = FieldStorage(fp=environ.get("wsgi.input"), environ=environ, keep_blank_values=True)

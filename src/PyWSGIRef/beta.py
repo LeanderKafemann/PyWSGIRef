@@ -35,9 +35,10 @@ class beta:
 
 BETA = beta()
 
-def enableBetaMode():
+def enableBetaMode(overrideOutput: bool = False):
     """
     Enables BETA mode.
     """
     BETA.enable()
-    print("BETA mode enabled.")
+    if not overrideOutput:
+        print("BETA mode enabled.")

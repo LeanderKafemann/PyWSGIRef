@@ -4,6 +4,7 @@
 
 *.toml linguist-language=Toml
 *.toml linguist-detectable=true
+*.toml linguist-documentation=false
 
 # *.pyhtml linguist-language=PyHTML
 *.pyhtml linguist-language=PHP
@@ -13,3 +14,4 @@
 
 *.json linguist-language=JSON
 *.json linguist-detectable=true
+*.json linguist-documentation=false

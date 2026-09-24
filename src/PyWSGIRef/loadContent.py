@@ -22,6 +22,7 @@ def loadFromWeb(url: str, overrideException: bool = False) -> str:
     if rq.status_code != 200:
         raise AccessToTemplateForbidden()
     rq_content = rq.content
+
     return rq_content.decode()
 
 def loadFromFile(filename: str) -> str:
@@ -34,4 +35,5 @@ def loadFromFile(filename: str) -> str:
         raise InvalidFiletypeError()
     with open(filename, "r", encoding="utf-8") as f:
         content = f.read()
+        
     return content

@@ -3,3 +3,4 @@ old/*
 dist/*
 src/PyWSGIRef.egg-info/*
 .DS_Store
+*.txt

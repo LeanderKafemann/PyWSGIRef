@@ -1,3 +1,3 @@
 python3 -m build
 python3 -m twine upload dist/*
-move dist\* old\
+mv dist/* old/

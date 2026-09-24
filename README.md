@@ -150,6 +150,12 @@ With the <code><{{evalPyHTML-script: alert('Hello, World!'); :script-}}></code> 
 you can add a script block anywhere inside your PyHTML file.<br/>
 Using pretty much the same syntax, you can also add a style block using
 <code><{{evalPyHTML-style: body { background-color: lightblue; } :style-}}></code>.
+
+### Stats
+Some stats are saved into the <code>STATS</code> object.<br/>
+You may access them using the object itself or <code>STATS.export_stats()</code>.<br/>
+The performance times of your application are collected there too.<br/>
+
 ### Shutting down your server
 You can shut down your server by calling the <code>shutdown</code> method on the server object:
 ```python
@@ -162,6 +168,7 @@ server = setUpServer(application, port=8000)
 # Shut down the server
 server.shutdown()
 ```
+
 ### Others
 Use the following to get information about your release and the author of the module:
 ```python
@@ -180,9 +187,7 @@ BETA.enable()
 ```
 Currently to be tested are:<br/>
 - PyHTML python script blocks<br/>
-- PyHTML python if clause blocks<br/>
-- application object running time measuring<br/>
-- application object counter of access<br/><br/>
+- PyHTML python if clause blocks<br/><br/>
 
 
 Please report any bugs you find in the GitHub repository and suggest new features!<br/><br/>

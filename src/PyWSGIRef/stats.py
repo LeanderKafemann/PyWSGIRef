@@ -41,6 +41,8 @@ class Stats:
         lines.append("=" * 30)
         lines.append(f"access counter: {self.count.count}")
         lines.append("")
+        lines.append(f"Failed executions: {len(self.performanceTimes) - self.count.count}")
+        lines.append("")
         lines.append("Performance times:")
         if not self.performanceTimes:
             lines.append("  (no entrys)")
