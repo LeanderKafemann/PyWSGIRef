@@ -111,7 +111,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
             perfTime.data["path"] = environ.get("PATH_INFO", "unknown")
         if not vercelPythonHosting:
             if customEncoding:
-                return content
+                return [content]
             return [content.encode("utf-8")]
         else:
             if customEncoding:
