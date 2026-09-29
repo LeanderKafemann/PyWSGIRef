@@ -35,14 +35,14 @@ def addSchablone(name: str, content: str):
         raise ServerAlreadyGeneratedError()
     SCHABLONEN[name] = PyHTML(content, macros=MACROS)
 
-def addMacro(name: str, content: PyHTML):
+def addMacro(name: str, content: str):
     """
     Adds a macro to the MACROS dictionary.
     """
     global MACROS
     if finished.value:
         raise ServerAlreadyGeneratedError()
-    MACROS[name] = content
+    MACROS[name] = PyHTML(content)
 
 def multiWebInit(baseURL: str, templateNames: list[str], overrideException: bool = False) -> list[str]:
     """
