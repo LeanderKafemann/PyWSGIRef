@@ -1,0 +1,41 @@
+from .finished import OneWayBoolean
+from .pyhtml import PyHTML
+from .beta import BETA
+from .exceptions import BetaModeNotEnabledError, ServerAlreadyGeneratedError
+
+class MacroDict:
+    """
+    A dictionary to store macros for the PyWSGIRef framework.
+    """
+    def __init__(self):
+        if not BETA.value:
+            raise BetaModeNotEnabledError("MacroDict can only be used in BETA mode.")
+        self.macros = {}
+        self.locked = OneWayBoolean()
+
+    def __getitem__(self, key: str) -> PyHTML:
+        return self.macros[key]
+    
+    def __setitem__(self, key: str, value: PyHTML):
+        if not isinstance(value, PyHTML):
+            raise TypeError("Value must be an instance of PyHTML.")
+        if not isinstance(key, str):
+            raise TypeError("Key must be a string.")
+        if self.locked.value:
+            raise ServerAlreadyGeneratedError("Cannot modify macros after it has been locked.")
+        self.macros[key] = value.decoded(cacheDecoded=True)
+    
+    def __contains__(self, key: str):
+        return key in self.macros
+    
+    def __repr__(self):
+        return f"MacroDict({self.macros})"
+    
+    def keys(self) -> list:
+        return list(self.macros.keys())
+    
+    def values(self) -> list:
+        return list(self.macros.values())
+    
+    def items(self) -> list:
+        return list(self.macros.items())

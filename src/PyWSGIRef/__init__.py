@@ -13,16 +13,18 @@ from .beta import BETA
 from .loadContent import *
 from .finished import finished
 from .stats import Stats
+from .macro import MacroDict
 
 def about():
     """
     Returns information about your release and other projects by Leander Kafemann
     """
-    return {"Version": (1, 1, 21), "Author": "Leander Kafemann", "date": "24.09.2026",\
+    return {"Version": (1, 1, 22), "Author": "Leander Kafemann", "date": "29.09.2026",\
             "recommend": ("pyimager"), "feedbackTo": "leander.kafemann+python@icloud.com"}
 
 SCHABLONEN = TemplateDict()
 STATS = Stats()
+MACROS = MacroDict()
 
 def addSchablone(name: str, content: str):
     """
@@ -32,6 +34,15 @@ def addSchablone(name: str, content: str):
     if finished.value:
         raise ServerAlreadyGeneratedError()
     SCHABLONEN[name] = PyHTML(content)
+
+def addMacro(name: str, content: PyHTML):
+    """
+    Adds a macro to the MACROS dictionary.
+    """
+    global MACROS
+    if finished.value:
+        raise ServerAlreadyGeneratedError()
+    MACROS[name] = content
 
 def multiWebInit(baseURL: str, templateNames: list[str], overrideException: bool = False) -> list[str]:
     """
@@ -81,7 +92,7 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
             pass
         except:
             raise InvalidEnvironError("Invalid WSGI environ and/or FieldStorage keys detected.")
-        type_ = "text/html" 
+        type_ = "text/html; charset=utf-8" 
         status = "200 OK"
         if advanced:
             if setAdvancedHeaders:
@@ -101,18 +112,21 @@ def makeApplicationObject(contentGeneratingFunction: Callable, advanced: bool = 
                 content = contentGeneratingFunction(environ["PATH_INFO"], environ["HTTP_X_REAL_IP"])
             else:
                 content = contentGeneratingFunction(environ["PATH_INFO"])
+
+        if not customEncoding:
+            content = content.encode("utf-8")
+
         headers = [("Content-Type", type_),
-                   ("Content-Length", str(len(content if not customEncoding else content[0]))),
+                   ("Content-Length", str(len(content))),
                    ('Access-Control-Allow-Origin', '*')]
+        
         start_response(status, headers)
         if getStats:
             STATS.stopPerfTime(perfTime)
             perfTime.data["ip"] = environ.get("HTTP_X_REAL_IP", "unknown")
             perfTime.data["path"] = environ.get("PATH_INFO", "unknown")
         if not vercelPythonHosting:
-            if customEncoding:
-                return [content]
-            return [content.encode("utf-8")]
+            return [content]
         else:
             if customEncoding:
                 raise VercelIncompabilityError("customEncoding cannot be used with vercelPythonHosting.")
