@@ -6,10 +6,8 @@ BETA.enable()
 addSchablone("helloWorld", loadFromFile("./shortcutHelloWorld.pyhtml"))
 
 # load macros first
-addMacro("helloWorld", PyHTML(loadFromFile("./macroHelloWorld.pyhtml"))) 
-addMacro("time", PyHTML(loadFromFile("./macroTime.pyhtml")))
-# WARNING: from PyWSGIRef 1.1.23 onwards, the string will be automatically inserted
-#          into a PyHTML object by addMacro.
+addMacro("helloWorld", loadFromFile("./helloWorldMacro.pyhtml")) 
+addMacro("time", loadFromFile("./timeMacro.pyhtml"))
 
 # add template using the macros AFTER the macros were initialized
 addSchablone("macroTest", loadFromFile("./macroTest.pyhtml"))

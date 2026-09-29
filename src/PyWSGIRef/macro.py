@@ -20,7 +20,7 @@ class MacroDict:
             raise TypeError("Key must be a string.")
         if self.locked.value:
             raise ServerAlreadyGeneratedError("Cannot modify macros after it has been locked.")
-        self.macros[key] = value.decoded(cacheDecoded=True)
+        self.macros[key] = value.decoded()
     
     def __contains__(self, key: str):
         return key in self.macros

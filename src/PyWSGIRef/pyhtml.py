@@ -137,7 +137,7 @@ class PyHTML:
             name = match.group(1)
             if name not in macros:
                 raise KeyError(f"Unknown macro: {name}")
-            replacement = macros[name].decoded()
+            replacement = macros[name]
             self.html = self.html[:match.start()] + replacement + self.html[match.end():]
 
     def decode(self, macros=None):
