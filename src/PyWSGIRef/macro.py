@@ -10,7 +10,7 @@ class MacroDict:
         self.macros = {}
         self.locked = OneWayBoolean()
 
-    def __getitem__(self, key: str) -> PyHTML:
+    def __getitem__(self, key: str) -> str:
         return self.macros[key]
     
     def __setitem__(self, key: str, value: PyHTML):
@@ -33,6 +33,9 @@ class MacroDict:
     
     def values(self) -> list:
         return list(self.macros.values())
+    
+    def get(self, key: str, default=None) -> str:
+        return self.macros.get(key, default)
     
     def items(self) -> list:
         return list(self.macros.items())

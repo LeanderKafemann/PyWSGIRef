@@ -110,3 +110,11 @@ class InvalidEnvironError(Exception):
     def __init__(self, message="Invalid WSGI environ."):
         self.message = message
         super().__init__(self.message)
+
+class UnknownMacroError(KeyError):
+    """
+    Raised when a macro is referenced that does not exist in the provided macros dictionary.
+    """
+    def __init__(self, message="Unknown macro referenced."):
+        self.message = message
+        super().__init__(self.message)

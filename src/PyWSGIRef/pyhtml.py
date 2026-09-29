@@ -3,7 +3,7 @@ from naturalsize import replStrPassage
 
 from .defaults import HELLO_WORLD as DEFAULT
 from .commons import *
-from .exceptions import InvalidIncludePhraseFiletypeError, StaticResourceUsageOutsideHeadError
+from .exceptions import InvalidIncludePhraseFiletypeError, StaticResourceUsageOutsideHeadError, UnknownMacroError
 from .beta import BETA
 from .patterns import *
 
@@ -130,15 +130,19 @@ class PyHTML:
             self.html = self.html[:match.start()] + replacement + self.html[match.end():]
 
     def _replace_macros(self, macros=None):
-        """Replaces named macro phrases with their decoded HTML."""
+        """
+        Replaces named macro phrases with their decoded HTML.
+        """
         if macros is None:
             return
-        for match in re.finditer(MACRO_PATTERN, self.html):
+        
+        def replace_macro(match):
             name = match.group(1)
             if name not in macros:
-                raise KeyError(f"Unknown macro: {name}")
-            replacement = macros[name]
-            self.html = self.html[:match.start()] + replacement + self.html[match.end():]
+                raise UnknownMacroError(f"Unknown macro: {name}")
+            return macros[name]
+
+        self.html = re.sub(MACRO_PATTERN, replace_macro, self.html)
 
     def decode(self, macros=None):
         """

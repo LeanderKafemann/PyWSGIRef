@@ -6,7 +6,7 @@
 		<p>
 		    You should now see the decoded macros:<br/>
 			Time-macro: <{{evalPyHTML-macro: time :macro-}}><br/>
-			Hello world bold macro: <{{evalPyHTML-macro: helloWorld :macro-}}>
+			Hello world bold macro: <{{evalPyHTML-macro: helloWorld :macro-}}><br/>
 			Another time the time: <{{evalPyHTML-macro: time :macro-}}>
 		</p>
 	</body>
