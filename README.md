@@ -187,7 +187,8 @@ BETA.enable()
 ```
 Currently to be tested are:<br/>
 - PyHTML python script blocks<br/>
-- PyHTML python if clause blocks<br/><br/>
+- PyHTML python if clause blocks<br/>
+- PyHTML macros<br/><br/>
 
 
 Please report any bugs you find in the GitHub repository and suggest new features!<br/><br/>

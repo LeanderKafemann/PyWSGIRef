@@ -11,3 +11,4 @@ STYLE_PATTERN = r"<\{\{evalPyHTML-style: (.*?) :style-\}\}\>"
 EVAL_BLOCK_PATTERN = r"<\{\{evalPyHTML-eval: (.*?) :eval-\}\}\>"
 
 IF_BLOCK_PATTERN = r"<\{\{evalPyHTML-if: (.*?)\}\}\>(.*?)((<\{\{evalPyHTML-else\}\}\>(.*?))?)<\{\{evalPyHTML-endif\}\}\>"
+MACRO_PATTERN = r"<\{\{evalPyHTML-macro: ([A-Za-z_][A-Za-z0-9_]*) :macro-\}\}>"

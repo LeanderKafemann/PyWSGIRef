@@ -8,8 +8,9 @@ from .beta import BETA
 from .patterns import *
 
 class PyHTML:
-    def __init__(self, html: str = DEFAULT):
+    def __init__(self, html: str = DEFAULT, macros=None):
         self.html = html
+        self.macros = macros
         self.context = None
 
     def _replace_eval_phrase(self):
@@ -128,34 +129,47 @@ class PyHTML:
                 replacement = f"<b>IfEvalError: {e}</b>"
             self.html = self.html[:match.start()] + replacement + self.html[match.end():]
 
-    def decode(self):
+    def _replace_macros(self, macros=None):
+        """Replaces named macro phrases with their decoded HTML."""
+        if macros is None:
+            return
+        for match in re.finditer(MACRO_PATTERN, self.html):
+            name = match.group(1)
+            if name not in macros:
+                raise KeyError(f"Unknown macro: {name}")
+            replacement = macros[name].decoded()
+            self.html = self.html[:match.start()] + replacement + self.html[match.end():]
+
+    def decode(self, macros=None):
         """
         Decodes the HTML content by replacing specific phrases and applying modern styling.
         """
         self.html = self.html.strip()
+        macros = self.macros if macros is None else macros
         self._replace_eval_phrase()
         self._replace_modern_styling()
         self._replace_script_blocks()
         self._replace_style_blocks()
         self._replace_includes()
+        self._replace_macros(macros)
         if BETA.value:
             self._replace_eval_blocks()
             self._replace_if_blocks()
 
-    def decoded(self, cacheDecoded: bool = False) -> str:
+    def decoded(self, cacheDecoded: bool = False, macros=None) -> str:
         """
         Returns the decoded HTML content.
         """
         backup = self.html
-        self.decode()
+        self.decode(macros=macros)
         _return = self.html
         if not cacheDecoded:
             self.html = backup
         return _return
 
-    def decodedContext(self, context: dict, cacheDecoded: bool = False) -> str:
+    def decodedContext(self, context: dict, cacheDecoded: bool = False, macros=None) -> str:
         """
         Returns the decoded HTML content with the provided context.
         """
         self.context = context
-        return self.decoded(cacheDecoded)
+        return self.decoded(cacheDecoded, macros=macros)

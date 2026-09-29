@@ -1,15 +1,12 @@
 from .finished import OneWayBoolean
+from .exceptions import ServerAlreadyGeneratedError
 from .pyhtml import PyHTML
-from .beta import BETA
-from .exceptions import BetaModeNotEnabledError, ServerAlreadyGeneratedError
 
 class MacroDict:
     """
     A dictionary to store macros for the PyWSGIRef framework.
     """
     def __init__(self):
-        if not BETA.value:
-            raise BetaModeNotEnabledError("MacroDict can only be used in BETA mode.")
         self.macros = {}
         self.locked = OneWayBoolean()
 

@@ -33,7 +33,7 @@ def addSchablone(name: str, content: str):
     global SCHABLONEN
     if finished.value:
         raise ServerAlreadyGeneratedError()
-    SCHABLONEN[name] = PyHTML(content)
+    SCHABLONEN[name] = PyHTML(content, macros=MACROS)
 
 def addMacro(name: str, content: PyHTML):
     """
