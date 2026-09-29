@@ -152,8 +152,8 @@ class PyHTML:
         self._replace_style_blocks()
         self._replace_includes()
         self._replace_macros(macros)
+        self._replace_eval_blocks()
         if BETA.value:
-            self._replace_eval_blocks()
             self._replace_if_blocks()
 
     def decoded(self, cacheDecoded: bool = False, macros=None) -> str:

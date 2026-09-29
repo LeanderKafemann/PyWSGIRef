@@ -1,6 +1,9 @@
 # PyWSGIRef
+
 easy server-setup
+
 ## Advantage
+
 Many web services offer simple ways to set up a WSGI webserver.<br/>
 The built-in WSGI server in Python is, however, not very easy to use.<br/>
 PyWSGIRef provides a simple way to set up a WSGI server with minimal code.<br/><br/>
@@ -11,14 +14,18 @@ before the server is running.<br/><br/>
 PyHTML files are HTML files that can contain {}-s for Python formatting or<br/>
 (upcoming) code blocks or shortened HTML, which can be used to create dynamic HTML content.<br/>
 PyWSGIRef also provides a simple way to decode these.
+
 ## Installation
+
 ### Using *pip*
+
 You can install PyWSGIRef via pip using
 <li>in a commandline:</li><br/>
 
 ```bash
 py -m pip install PyWSGIRef
 ```
+
 <br/>
 <li>in a python script:</li><br/>
 
@@ -26,8 +33,11 @@ py -m pip install PyWSGIRef
 import os
 os.system('py -m pip install PyWSGIRef')
 ```
+
 ## Usage
+
 ### Setting up the WSGI server
+
 ```python
 from PyWSGIRef import *
 
@@ -149,7 +159,11 @@ You may include CSS, JS, JSON and ICO files.<br/><br/>
 With the <code><{{evalPyHTML-script: alert('Hello, World!'); :script-}}></code> phrase,<br/>
 you can add a script block anywhere inside your PyHTML file.<br/>
 Using pretty much the same syntax, you can also add a style block using
-<code><{{evalPyHTML-style: body { background-color: lightblue; } :style-}}></code>.
+<code><{{evalPyHTML-style: body { background-color: lightblue; } :style-}}></code>.<br/><br/>
+
+PyHTML can also execute some Python code inline via the python code block <code><{{evalPyHTML-eval: :eval-}}></code>.<br/>
+You may specify the context the code is executed in using the decodedContext method of the PyHTML class.<br/>
+<b>WARNING</b>: Be careful which Python code is executed on your server!
 
 ### Stats
 Some stats are saved into the <code>STATS</code> object.<br/>
@@ -170,13 +184,16 @@ server.shutdown()
 ```
 
 ### Others
+
 Use the following to get information about your release and the author of the module:
 ```python
 from PyWSGIRef import about
 
 about()
 ```
+
 ### Curious?
+
 Join the <b>BETA</b> group to get new features even earlier!<br/>
 Note that BETA features may not be tested when using them.
 ```python
@@ -186,7 +203,6 @@ from PyWSGIRef import BETA
 BETA.enable()
 ```
 Currently to be tested are:<br/>
-- PyHTML python script blocks<br/>
 - PyHTML python if clause blocks<br/>
 - PyHTML macros<br/><br/>
 
@@ -194,4 +210,5 @@ Currently to be tested are:<br/>
 Please report any bugs you find in the GitHub repository and suggest new features!<br/><br/>
 
 Thanks a lot for helping improving PyWSGIRef!
+
 ### More coming soon
