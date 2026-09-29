@@ -9,6 +9,7 @@ addSchablone("scriptInclusionTest", loadFromFile("./scriptInclusionTest.pyhtml")
 addSchablone("styleInclusionTest", loadFromFile("./styleInclusionTest.pyhtml"))
 addSchablone("inclusionTest", loadFromFile("./staticResourceInclusionTest.pyhtml"))
 addSchablone("evalTest", loadFromFile("./evalTest.pyhtml"))
+addSchablone("utf8Test", loadFromFile("./utf8Test.pyhtml"))
 
 def contentGeneratingFunction(path: str) -> str:
     """
@@ -36,6 +37,9 @@ def contentGeneratingFunction(path: str) -> str:
         case "/evalTest":
             import datetime
             return SCHABLONEN["evalTest"].decodedContext(locals())
+            # successful
+        case "/utf8Test":
+            return SCHABLONEN["utf8Test"].decoded()
             # successful
         case _:
             return "404 Not Found"

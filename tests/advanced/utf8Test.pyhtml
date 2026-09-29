@@ -1,0 +1,10 @@
+<{{evalPyHTML}}><title>Hello World</title>
+		<{{evalPyHTML-modernStyling: true}}>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>
+		    Here should be the Euro sign: €
+		</p>
+	</body>
+</html>

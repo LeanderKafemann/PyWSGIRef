@@ -44,6 +44,7 @@ class Stats:
         lines.append(f"Failed executions: {self.count.count - len(self.performanceTimes)} - 1")
         lines.append("")
         lines.append("Performance times:")
+        
         if not self.performanceTimes:
             lines.append("  (no entrys)")
         else:
