@@ -1,1 +1,1 @@
-This is the current time: <b><{{evalPyHTML-eval: import datetime; datetime.datetime.now() :eval-}}></b>
+This is the current time: <b><{{evalPyHTML-eval: __import__('datetime').datetime.now() :eval-}}></b>
