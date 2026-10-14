@@ -23,6 +23,7 @@ class Stats:
     def __init__(self):
         self.performanceTimes = []
         self.count = RestrictedAccessCounter()
+        self.onStartTime = datetime.datetime.now()
 
     def startPerfTime(self, title: str = "perfTime") -> PerformanceTime:
         return PerformanceTime(title)
@@ -40,6 +41,8 @@ class Stats:
         lines.append("PyWSGIRef Statistic-Export")
         lines.append("=" * 30)
         lines.append(f"access counter: {self.count.count}")
+        lines.append("")
+        lines.append(f"Start time: {self.onStartTime}")
         lines.append("")
         lines.append(f"Failed executions: {self.count.count - len(self.performanceTimes) - 1}")
         lines.append("")
